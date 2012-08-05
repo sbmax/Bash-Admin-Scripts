@@ -31,31 +31,14 @@
 
 import sys
 from socket import *
-successcount = 0
-failurecount = 0
-count = 0
-
+from util import print_debug, tcp_check_bulk
+result = -1
 if (len(sys.argv) > 1):
-
-	serverHost = sys.argv[1]		# use port from ARGV 1
-	serverPort = int(sys.argv[2])		# use port from ARGV 2
-	connectTimes = int(sys.argv[3])		# use port from ARGV 3
-
-	while (count < connectTimes) :
-		s = socket(AF_INET, SOCK_STREAM)	#create a TCP socket
-		try:
-			s.connect((serverHost, serverPort))	#connect to server on the port
-			s.shutdown(2)				#disconnect
-			successcount += 1
-			count += 1
-			#print "Success. " + repr(successcount) + " Connected to " + serverHost + " on port: " + str(serverPort)
-		except:
-			failurecount += 1
-			count += 1
-			#print "Failure. " + repr(failurecount) + " Cannot connect to " + serverHost + " on port: " + str(serverPort)
-
-	print "Done with " + serverHost + " on port: " + str(serverPort)
-	print "Done. Failures : " + repr(failurecount) + " Successes : " + repr(successcount)
+    serverHost = sys.argv[1]        # use port from ARGV 1
+    serverPort = int(sys.argv[2])        # use port from ARGV 2
+    connectTimes = int(sys.argv[3])        # use port from ARGV 3
+    result = tcp_check_bulk(serverHost, serverPort, connectTimes)
 else:
-	print "Usage : tcpcheck.py HOST PORT CONNECTIONS"
+    print "Usage : tcpcheck.py HOST PORT CONNECTIONS"
 
+sys.exit(result)

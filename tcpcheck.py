@@ -31,19 +31,13 @@
 
 import sys
 from socket import *
-
+from util import print_debug, tcp_check
+result = -1
 if (len(sys.argv) > 1):
-
-	serverHost = sys.argv[1]		# use port from ARGV 1
-	serverPort = int(sys.argv[2])		# use port from ARGV 2
-
-	s = socket(AF_INET, SOCK_STREAM)	#create a TCP socket
-	try:
-		s.connect((serverHost, serverPort))	#connect to server on the port
-		s.shutdown(2)				#disconnect
-		print "Success. Connected to " + serverHost + " on port: " + str(serverPort)
-	except:
-		print "Failure. Cannot connect to " + serverHost + " on port: " + str(serverPort)
+    serverHost = sys.argv[1]        # use port from ARGV 1
+    serverPort = int(sys.argv[2])        # use port from ARGV 2
+    result = tcp_check(serverHost, serverPort)
 else:
-	print "Usage : tcpcheck.py HOST PORT"
+    print "Usage : tcpcheck.py HOST PORT"
 
+sys.exit(result)
